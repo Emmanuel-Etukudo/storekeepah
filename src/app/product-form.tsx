@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
@@ -20,6 +19,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import ImagePickerButton from "@/components/ImagePickerButton";
+import FormInput from "@/components/FormInput";
 import { getProductById, updateProduct, addProduct } from "@/database/db";
 
 export default function ProductFormScreen() {
@@ -32,6 +32,7 @@ export default function ProductFormScreen() {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
+  const [description, setDescription] = useState<string | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   // UI state
@@ -54,6 +55,7 @@ export default function ProductFormScreen() {
         setName(product.name);
         setQuantity(product.quantity.toString());
         setPrice(product.price.toString());
+        setDescription(product.description);
         setImageUri(product.image_uri);
       } else {
         Alert.alert("Error", "Product not found");
@@ -91,12 +93,19 @@ export default function ProductFormScreen() {
           name.trim(),
           quantityNum,
           priceNum,
+          description ? description.trim() : null,
           imageUri
         );
         Alert.alert("Success", "Product updated successfully");
       } else {
         // Add new product
-        await addProduct(name.trim(), quantityNum, priceNum, imageUri);
+        await addProduct(
+          name.trim(),
+          quantityNum,
+          priceNum,
+          description ? description.trim() : null,
+          imageUri
+        );
         Alert.alert("Success", "Product added successfully");
       }
 
@@ -143,62 +152,61 @@ export default function ProductFormScreen() {
         keyboardShouldPersistTaps="handled"
       >
         {/* Product Name */}
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Product Name *</Text>
-          <TextInput
-            style={[styles.input, errors.name && styles.inputError]}
-            value={name}
-            onChangeText={(text) => {
-              setName(text);
-              if (errors.name) {
-                setErrors({ ...errors, name: undefined });
-              }
-            }}
-            placeholder="Enter product name"
-            placeholderTextColor="#999"
-          />
-          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
-        </View>
+        <FormInput
+          label="Product Name"
+          value={name}
+          onChangeText={(text) => {
+            setName(text);
+            if (errors.name) {
+              setErrors({ ...errors, name: undefined });
+            }
+          }}
+          placeholder="Enter product name"
+          error={errors.name}
+          required
+        />
 
         {/* Quantity */}
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Quantity *</Text>
-          <TextInput
-            style={[styles.input, errors.quantity && styles.inputError]}
-            value={quantity}
-            onChangeText={(text) => {
-              setQuantity(text);
-              if (errors.quantity) {
-                setErrors({ ...errors, quantity: undefined });
-              }
-            }}
-            placeholder="Enter quantity"
-            placeholderTextColor="#999"
-            keyboardType="numeric"
-          />
-          {errors.quantity && (
-            <Text style={styles.errorText}>{errors.quantity}</Text>
-          )}
-        </View>
+        <FormInput
+          label="Quantity"
+          value={quantity}
+          onChangeText={(text) => {
+            setQuantity(text);
+            if (errors.quantity) {
+              setErrors({ ...errors, quantity: undefined });
+            }
+          }}
+          placeholder="Enter quantity"
+          keyboardType="numeric"
+          error={errors.quantity}
+          required
+        />
 
         {/* Price */}
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Price *</Text>
-          <TextInput
-            style={[styles.input, errors.price && styles.inputError]}
-            value={price}
-            onChangeText={(text) => {
-              setPrice(text);
-              if (errors.price) {
-                setErrors({ ...errors, price: undefined });
-              }
-            }}
-            placeholder="Enter price"
-            placeholderTextColor="#999"
-            keyboardType="decimal-pad"
-          />
-          {errors.price && <Text style={styles.errorText}>{errors.price}</Text>}
-        </View>
+        <FormInput
+          label="Price"
+          value={price}
+          onChangeText={(text) => {
+            setPrice(text);
+            if (errors.price) {
+              setErrors({ ...errors, price: undefined });
+            }
+          }}
+          placeholder="Enter price"
+          keyboardType="decimal-pad"
+          error={errors.price}
+          required
+        />
+
+        <FormInput
+          label="Description"
+          value={description ?? ""}
+          onChangeText={(text) => {
+            setDescription(text);
+          }}
+          placeholder="Enter short description"
+          keyboardType="default"
+        />
 
         {/* Image Picker */}
         <View style={styles.inputGroup}>
@@ -231,6 +239,7 @@ export default function ProductFormScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 32,
     backgroundColor: Colors.light.background,
   },
   loadingContainer: {
@@ -281,23 +290,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.light.text,
     marginBottom: 8,
-  },
-  input: {
-    backgroundColor: "#FFF",
-    borderWidth: 1,
-    borderColor: "#DDD",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    color: Colors.light.text,
-  },
-  inputError: {
-    borderColor: "#FF3B30",
-  },
-  errorText: {
-    fontSize: 12,
-    color: "#FF3B30",
-    marginTop: 4,
   },
   saveButton: {
     backgroundColor: Colors.light.tint,

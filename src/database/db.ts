@@ -9,6 +9,7 @@ const db = SQLite.openDatabaseSync("storekeeper.db");
  */
 export const initDatabase = async (): Promise<void> => {
   try {
+    // Create the table if it doesn't exist
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,9 +17,22 @@ export const initDatabase = async (): Promise<void> => {
         quantity INTEGER NOT NULL,
         price REAL NOT NULL,
         image_uri TEXT,
+        description TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `);
+
+    // Check if description column exists, if not add it (for existing databases)
+    try {
+      await db.execAsync(`
+        ALTER TABLE products ADD COLUMN description TEXT;
+      `);
+      console.log("Added description column to existing table");
+    } catch (alterError) {
+      // Column might already exist, which is fine
+      console.log("Description column already exists or table is new");
+    }
+
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Error initializing database:", error);
@@ -64,12 +78,13 @@ export const addProduct = async (
   name: string,
   quantity: number,
   price: number,
+  description: string | null,
   imageUri: string | null
 ): Promise<number> => {
   try {
     const result = await db.runAsync(
-      "INSERT INTO products (name, quantity, price, image_uri) VALUES (?, ?, ?, ?)",
-      [name, quantity, price, imageUri]
+      "INSERT INTO products (name, quantity, price, image_uri, description) VALUES (?, ?, ?, ?, ?)",
+      [name, quantity, price, imageUri, description]
     );
     console.log("Product added successfully with ID:", result.lastInsertRowId);
     return result.lastInsertRowId;
@@ -87,12 +102,13 @@ export const updateProduct = async (
   name: string,
   quantity: number,
   price: number,
+  description: string | null,
   imageUri: string | null
 ): Promise<void> => {
   try {
     const result = await db.runAsync(
-      "UPDATE products SET name = ?, quantity = ?, price = ?, image_uri = ? WHERE id = ?",
-      [name, quantity, price, imageUri, id]
+      "UPDATE products SET name = ?, quantity = ?, price = ?, image_uri = ?, description = ? WHERE id = ?",
+      [name, quantity, price, imageUri, description, id]
     );
     console.log("Product updated successfully, rows affected:", result.changes);
   } catch (error) {

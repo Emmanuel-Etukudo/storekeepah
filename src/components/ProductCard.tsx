@@ -126,6 +126,11 @@ export default function ProductCard({
               <Text style={styles.name} numberOfLines={2}>
                 {product.name}
               </Text>
+              {product.description && (
+                <Text style={styles.description} numberOfLines={2}>
+                  {product.description}
+                </Text>
+              )}
               <View style={styles.infoRow}>
                 <View style={styles.infoItem}>
                   <Text style={styles.infoLabel}>Qty:</Text>
@@ -198,7 +203,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#333",
+    marginBottom: 4,
+  },
+  description: {
+    fontSize: 14,
+    color: "#666",
     marginBottom: 8,
+    fontStyle: "italic",
   },
   infoRow: {
     flexDirection: "row",
