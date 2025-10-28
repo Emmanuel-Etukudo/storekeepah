@@ -20,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.etukz.storekeepah"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +34,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "8807b8b2-8ab1-4ee8-85b1-d3a7362b5678"
+      }
+    },
+    "owner": "etukz"
   }
 }
