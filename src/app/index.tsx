@@ -123,6 +123,11 @@ export default function HomeScreen() {
         <Text style={styles.headerSubtitle}>
           {products.length} {products.length === 1 ? "product" : "products"}
         </Text>
+        {products.length > 0 && (
+          <Text style={styles.hintText}>
+            ← Swipe left on items to edit or delete
+          </Text>
+        )}
       </View>
 
       <FlatList
@@ -176,7 +181,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: Colors.light.tint,
   },
   headerTitle: {
     fontSize: 32,
@@ -187,6 +192,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     marginTop: 4,
+  },
+  hintText: {
+    fontSize: 10,
+    color: "#999",
+    marginTop: 6,
+    fontStyle: "italic",
   },
   listContainer: {
     padding: 16,
