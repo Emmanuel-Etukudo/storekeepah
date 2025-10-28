@@ -147,15 +147,14 @@ export default function ImagePickerButton({
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    // alignItems: "center",
   },
   imageButton: {
-    width: 200,
     height: 200,
     borderRadius: 12,
     overflow: "hidden",
     backgroundColor: Colors.light.background,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#DDD",
     borderStyle: "dashed",
   },
