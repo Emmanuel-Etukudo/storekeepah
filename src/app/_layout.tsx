@@ -56,7 +56,14 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="index"
+          options={{ title: "Inventory", headerShown: false }}
+        />
+        <Stack.Screen
+          name="product-form"
+          options={{ headerShown: false, presentation: "modal" }}
+        />
       </Stack>
     </ThemeProvider>
   );
