@@ -13,8 +13,8 @@ A React Native inventory management app built with Expo that helps users manage 
 ## Try Demo
 
 - Screen Record - https://drive.google.com/file/d/1zUlgg9J0Uu4zubDl7wLD--6Ftwc4_dOg/view?usp=sharing
-- Expo build - https://expo.dev/accounts/etukz/projects/storekeepah/builds/2e6cd2fd-2ae4-4ed7-b16b-9e778a22b80d
-- Appetize - (Not ready, expo build taking time)
+- Expo build - https://expo.dev/accounts/etukz/projects/storekeepah/builds/c5c73248-c03b-4932-9bfb-d566806acb43
+- Appetize - https://appetize.io/app/b_izcuvmyg4crnbywqsajdu7xycq
 
 ## Tech Stack
 
