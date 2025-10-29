@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TextInputProps,
+} from "react-native";
 import Colors from "@/constants/Colors";
 
 interface FormInputProps extends TextInputProps {
@@ -22,11 +28,7 @@ export default function FormInput({
         {required && " *"}
       </Text>
       <TextInput
-        style={[
-          styles.input,
-          error && styles.inputError,
-          style,
-        ]}
+        style={[styles.input, error && styles.inputError, style]}
         placeholderTextColor="#999"
         {...textInputProps}
       />
