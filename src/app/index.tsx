@@ -30,20 +30,24 @@ export default function HomeScreen() {
   );
 
   // Initialize database and load products
-  const loadProducts = async () => {
-    try {
+  const loadProducts = useCallback(async () => {
+    if (!loading) {
       setLoading(true);
+      setRefreshing(true);
+    }
+
+    try {
       await initDatabase();
       const fetchedProducts = await getAllProducts();
       setProducts(fetchedProducts);
     } catch (error) {
       console.error("Error loading products:", error);
       Alert.alert("Error", "Failed to load products. Please try again.");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
     }
-  };
+
+    setLoading(false);
+    setRefreshing(false);
+  }, [loading]);
 
   // Handle pull-to-refresh
   const onRefresh = () => {
